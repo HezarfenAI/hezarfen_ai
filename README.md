@@ -1,1 +1,1 @@
-# fake-news-checker
+# Fake News Chcker Model
