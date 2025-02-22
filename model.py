@@ -41,7 +41,7 @@ class HezarfenAI:
         self.stemmer = PorterStemmer()
 
     def load_dataset(self):
-        self.df = pd.read_csv("datasets/fake_or_real_news.csv")
+        self.df = pd.read_csv("../hezarfen_ai/datasets/fake_or_real_news.csv")
         self.df.head()
 
     def preprocess_text(self, text):
@@ -70,9 +70,9 @@ class HezarfenAI:
         print(f'Model Doğruluğu: {accuracy * 100:.2f}%')
 
     def save_model(self):
-        joblib.dump(self.model, 'hezarfen.pkl')
+        joblib.dump((self.model, self.tfidf_vectorizer), '../web-api/hezarfen.pkl')
 
-        return joblib.load('hezarfen.pkl')
+        return joblib.load('../web-api/hezarfen.pkl')
 
     def ask(self, text):
         processed_text = self.preprocess_text(text)
@@ -94,12 +94,34 @@ class HezarfenAI:
             "prediction": result
         }
 
-if __name__ == "__main__":
-    hezarfen = HezarfenAI()
-    hezarfen.download_dependencies()
-    hezarfen.load_dataset()
-    hezarfen.train_model()
-    hezarfen.evaluate_model()
-    hezarfen.save_model()
+    #print(hezarfen.run_random_test())
 
-    print(hezarfen.run_random_test())
+class ModelLoader:
+    def __init__(self):
+        self.model = None
+        self.stop_words = set(stopwords.words("english"))
+        self.stemmer = PorterStemmer()
+        self.model, self.tfidf_vectorizer = joblib.load("../web-api/hezarfen.pkl")
+
+    def run_model(self):
+        hezarfen = HezarfenAI()
+        hezarfen.download_dependencies()
+        hezarfen.load_dataset()
+        hezarfen.train_model()
+        hezarfen.evaluate_model()
+        hezarfen.save_model()
+
+    def preprocess_text(self, text):
+        text = text.lower()
+        text = re.sub(r'[^\w\s]', '', text)
+        tokens = word_tokenize(text)
+        tokens = [self.stemmer.stem(word) for word in tokens if word not in self.stop_words]
+
+        return ' '.join(tokens)
+
+    def ask(self, text):
+        processed_text = self.preprocess_text(text)
+        vectorized_text = self.tfidf_vectorizer.transform([processed_text]).toarray()
+        prediction = self.model.predict(vectorized_text)
+
+        return prediction
