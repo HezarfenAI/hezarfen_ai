@@ -25,7 +25,7 @@ nltk.download("punkt_tab")
 nltk.download("stopwords")
 
 class HezarfenAI:
-    def __init__(self):
+    def __init__(self, model_path="hezarfen.pkl", dataset_path="datasets/turkish_news.csv"):
         self.tfidf_vectorizer = None
         self.y_pred = None
         self.y_test = None
@@ -35,13 +35,15 @@ class HezarfenAI:
         self.stop_words = None
         self.df = None
         self.model = LogisticRegression()
+        self.dataset_path = dataset_path
+        self.model_path = model_path
 
     def download_dependencies(self):
-        self.stop_words = set(stopwords.words("english"))
+        self.stop_words = set(stopwords.words("turkish"))
         self.stemmer = PorterStemmer()
 
     def load_dataset(self):
-        self.df = pd.read_csv("../hezarfen_ai/datasets/fake_or_real_news.csv")
+        self.df = pd.read_csv(self.dataset_path)
         self.df.head()
 
     def preprocess_text(self, text):
@@ -53,7 +55,7 @@ class HezarfenAI:
         return ' '.join(tokens)
 
     def train_model(self):
-        self.df['processed_text'] = self.df['text'].apply(self.preprocess_text)
+        self.df['processed_text'] = self.df['text'].apply(lambda x: self.preprocess_text(str(x)))
         self.tfidf_vectorizer = TfidfVectorizer(max_features=5000)
         self.x = self.tfidf_vectorizer.fit_transform(self.df["processed_text"]).toarray()
         self.y = self.df["label"].values
@@ -70,9 +72,9 @@ class HezarfenAI:
         print(f'Model Doğruluğu: {accuracy * 100:.2f}%')
 
     def save_model(self):
-        joblib.dump((self.model, self.tfidf_vectorizer), '../web-api/hezarfen.pkl')
+        joblib.dump((self.model, self.tfidf_vectorizer), self.model_path)
 
-        return joblib.load('../web-api/hezarfen.pkl')
+        return joblib.load(self.model_path)
 
     def ask(self, text):
         processed_text = self.preprocess_text(text)
@@ -97,14 +99,16 @@ class HezarfenAI:
     #print(hezarfen.run_random_test())
 
 class ModelLoader:
-    def __init__(self):
+    def __init__(self, csv_file, model_file, dataset_file):
         self.model = None
-        self.stop_words = set(stopwords.words("english"))
+        self.stop_words = set(stopwords.words("turkish"))
         self.stemmer = PorterStemmer()
-        self.model, self.tfidf_vectorizer = joblib.load("../web-api/hezarfen.pkl")
+        self.model, self.tfidf_vectorizer = joblib.load(model_file)
+        self.model_file = model_file
+        self.dataset_file = dataset_file
 
     def run_model(self):
-        hezarfen = HezarfenAI()
+        hezarfen = HezarfenAI(model_path=self.model_file, dataset_path=self.dataset_file)
         hezarfen.download_dependencies()
         hezarfen.load_dataset()
         hezarfen.train_model()
