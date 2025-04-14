@@ -1,3 +1,24 @@
+Metadata-Version: 2.4
+Name: hezarfenai
+Version: 0.0.2
+Summary: A Teknofest project named HezarfenAI Official Python Package
+Author: Ömer Asaf Karasu
+Author-email: omer.karasu@niafix.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary
+
 # HezarfenAI - Official Python Package
 
 ## List Of Content

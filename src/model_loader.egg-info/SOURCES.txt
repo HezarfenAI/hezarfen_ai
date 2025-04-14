@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/model_loader.py
+src/model_loader.egg-info/PKG-INFO
+src/model_loader.egg-info/SOURCES.txt
+src/model_loader.egg-info/dependency_links.txt
+src/model_loader.egg-info/top_level.txt
+src/models/__init__.py
+src/models/news_checker.py

@@ -1,0 +1,3 @@
+[build-system]
+requires = ['setuptools>=42', 'scikit-learn', 'sklearn', 'pandas', 'numpy', 'joblib', 'nltk', 'scipy']
+build-backend = 'setuptools.build_meta'
