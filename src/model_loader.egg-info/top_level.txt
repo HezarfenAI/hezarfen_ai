@@ -1,3 +1,0 @@
-model_loader
-models
-tests
