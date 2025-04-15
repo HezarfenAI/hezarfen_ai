@@ -5,7 +5,7 @@ with open("README.md", "r", encoding = "utf-8") as fh:
 
 setuptools.setup(
     name = "hezarfenai",
-    version = "0.0.6",
+    version = "0.0.7",
     author = "Ömer Asaf Karasu",
     author_email = "omer.karasu@niafix.com",
     description = "A Teknofest project named HezarfenAI Official Python Package",
