@@ -3,7 +3,7 @@ import joblib
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import re
-from models.news_checker import HezarfenAI
+from news_checker import HezarfenAI
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 defined_models = {
@@ -40,7 +40,7 @@ class ModelLoader:
 
     def ask(self, text):
         processed_text = self.preprocess_text(text)
-        vectorized_text = self.tfidf_vectorizer.transform([processed_text]).toarray()
+        vectorized_text = self.tfidf_vectorizer.transform([processed_text]).toarray() # type: ignore
         prediction = self.model.predict_proba(vectorized_text)
 
         return prediction[0][1]
