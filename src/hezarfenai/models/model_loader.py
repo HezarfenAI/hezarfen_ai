@@ -3,7 +3,7 @@ import joblib
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import re
-from news_checker import HezarfenAI
+from hezarfenai.models.news_checker import HezarfenAI
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 defined_models = {
