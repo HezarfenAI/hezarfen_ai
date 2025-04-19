@@ -109,7 +109,7 @@ class HezarfenAI:
             raise ValueError("TF-IDF vectorizer is not initialized.")
 
         processed_text = self.preprocess_text(text)
-        vectorized_text = self.tfidf_vectorizer.transform([processed_text]).toarray()
+        vectorized_text = self.tfidf_vectorizer.transform([processed_text]).toarray() # type: ignore
         prediction = self.model.predict_proba(vectorized_text)
 
         return prediction

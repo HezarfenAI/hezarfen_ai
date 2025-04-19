@@ -5,7 +5,7 @@ with open("README.md", "r", encoding = "utf-8") as fh:
 
 setuptools.setup(
     name = "hezarfenai",
-    version = "0.0.9",
+    version = "0.1.0",
     author = "Ömer Asaf Karasu",
     author_email = "omer.karasu@niafix.com",
     description = "A Teknofest project named HezarfenAI Official Python Package",
@@ -16,6 +16,15 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    install_requires=[
+            "nltk>=3.9",
+            "scikit-learn>=1.0",
+            "pandas",
+            "TurkishStemmer",
+            "numpy",
+            "scipy",
+            "joblib"
+        ],
     package_dir = {"": "src"},
     packages = setuptools.find_packages(where="src"),
     python_requires = ">=3.6"
