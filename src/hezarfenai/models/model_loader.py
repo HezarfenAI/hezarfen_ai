@@ -25,9 +25,9 @@ class ModelLoader:
         if model_generation is True:
             hezarfen.download_dependencies()
             hezarfen.load_dataset()
-            hezarfen.evaluate_model()
             hezarfen.train_model()
             hezarfen.save_model()
+            hezarfen.evaluate_model()
 
         self.model = joblib.load(model_path)
 
