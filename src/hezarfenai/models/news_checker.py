@@ -25,7 +25,7 @@ nltk.download("punkt_tab")
 nltk.download("stopwords")
 
 class HezarfenAI:
-    def __init__(self, model_path="hezarfen.pkl", dataset_path="datasets/turkish_news.csv"):
+    def __init__(self, dataset_path: str, model_path: str):
         #self.tfidf_vectorizer = None
         #self.y_pred = None
         #self.y_test = None
@@ -58,40 +58,13 @@ class HezarfenAI:
     def train_model(self):
         self.df['processed_text'] = self.df['text'].apply(lambda x: self.preprocess_text(str(x)))
         self.tfidf_vectorizer = TfidfVectorizer()
-        self.x = self.tfidf_vectorizer.fit_transform(self.df["processed_text"]).toarray()
+        self.x = self.tfidf_vectorizer.fit_transform(self.df["processed_text"]).toarray() # type: ignore
         self.y = self.df["label"].values
         x_train, x_test, y_train, self.y_test = train_test_split(self.x, self.y, test_size=0.2, random_state=42)
         self.model.fit(x_train, y_train)
         self.y_pred = self.model.predict(x_test)
 
         print("Guest: ", self.y_pred)
-
-        """
-            def train_model(self):
-                # Filter out rows with the label "Other"
-                filtered_df = self.df[self.df["label"].isin(["True", "False"])]
-
-                # Preprocess the text
-                filtered_df['processed_text'] = filtered_df['text'].apply(lambda x: self.preprocess_text(str(x)))
-
-                # Vectorize the text
-                self.tfidf_vectorizer = TfidfVectorizer()
-                self.x = self.tfidf_vectorizer.fit_transform(filtered_df["processed_text"]).toarray()
-
-                # Classify the labels as "REAL" or "FAKE"
-                self.y = ["REAL" if label == "True" else "FAKE" for label in filtered_df["label"].values]
-
-                # Split the data into training and testing sets
-                x_train, x_test, y_train, self.y_test = train_test_split(self.x, self.y, test_size=0.2, random_state=42)
-
-                # Train the model
-                self.model.fit(x_train, y_train)
-
-                # Predict the labels for the test set
-                self.y_pred = self.model.predict(x_test)
-
-                print("Guest: ", self.y_pred)
-        """
 
     def evaluate_model(self):
         # Doğruluk değerlendirmesi

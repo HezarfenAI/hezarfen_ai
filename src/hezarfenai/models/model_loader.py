@@ -12,7 +12,7 @@ defined_models = {
 }
 
 class ModelLoader:
-    def __init__(self, model_path, dataset_file, model_type: str):
+    def __init__(self, model_path: str, dataset_file: str, model_type: str, model_generation: bool = True):
         self.stop_words = set(stopwords.words("turkish"))
         self.stemmer = TurkishStemmer()
         self.model_path = model_path
@@ -21,11 +21,13 @@ class ModelLoader:
         self.tfidf_vectorizer = TfidfVectorizer()
 
         hezarfen = HezarfenAI(model_path=self.model_path, dataset_path=self.dataset_file)
-        hezarfen.download_dependencies()
-        hezarfen.load_dataset()
-        hezarfen.train_model()
-        hezarfen.evaluate_model()
-        hezarfen.save_model()
+
+        if model_generation is True:
+            hezarfen.download_dependencies()
+            hezarfen.load_dataset()
+            hezarfen.evaluate_model()
+            hezarfen.train_model()
+            hezarfen.save_model()
 
         self.model = joblib.load(model_path)
 
