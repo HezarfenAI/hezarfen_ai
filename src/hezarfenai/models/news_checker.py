@@ -75,8 +75,6 @@ class HezarfenAI:
     def save_model(self):
         joblib.dump((self.model, self.tfidf_vectorizer), self.model_path)
 
-        return joblib.load(self.model_path)
-
     def ask(self, text):
         if self.tfidf_vectorizer is None:
             raise ValueError("TF-IDF vectorizer is not initialized.")

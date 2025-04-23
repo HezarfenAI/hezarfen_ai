@@ -18,7 +18,7 @@ class ModelLoader:
         self.model_path = model_path
         self.dataset_file = dataset_file
         self.model_type = model_type
-        self.tfidf_vectorizer = TfidfVectorizer()
+        #self.tfidf_vectorizer = TfidfVectorizer()
 
         hezarfen = HezarfenAI(model_path=self.model_path, dataset_path=self.dataset_file)
 
@@ -29,7 +29,7 @@ class ModelLoader:
             hezarfen.save_model()
             hezarfen.evaluate_model()
 
-        self.model = joblib.load(model_path)
+        self.model, self.tfidf_vectorizer = joblib.load(model_path)
 
     def preprocess_text(self, text):
         text = text.lower()
